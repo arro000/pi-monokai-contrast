@@ -1,0 +1,22 @@
+{
+  "name": "pi-monokai-contrast",
+  "version": "1.1.0",
+  "description": "High-contrast Monokai dark and light themes for Pi",
+  "license": "MIT",
+  "type": "module",
+  "keywords": ["pi-package", "pi", "theme", "monokai"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arro000/pi-monokai-contrast.git"
+  },
+  "files": ["monokai-contrast.json", "monokai-contrast-light.json", "README.md", "LICENSE"],
+  "pi": {
+    "themes": ["./monokai-contrast.json", "./monokai-contrast-light.json"]
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}
