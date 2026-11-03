@@ -1,8 +1,12 @@
 {
-  "name": "pi-monokai-contrast",
+  "name": "@arro000/pi-monokai-contrast",
   "version": "1.1.0",
   "description": "High-contrast Monokai dark and light themes for Pi",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "keywords": ["pi-package", "pi", "theme", "monokai"],
   "repository": {
