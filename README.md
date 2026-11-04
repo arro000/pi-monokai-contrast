@@ -1,50 +1,85 @@
-# Monokai Contrast for Pi
+<div align="center">
+  <h1>Monokai Contrast for Pi</h1>
+  <p><strong>Monokai-inspired dark and light themes for a high-contrast Pi workspace.</strong></p>
 
-High-contrast Monokai-inspired dark and light themes for [Pi](https://pi.dev), checked against **Pi 1.5.0** and its published theme schema.
+  [![npm](https://img.shields.io/npm/v/@arro000/pi-monokai-contrast)](https://www.npmjs.com/package/@arro000/pi-monokai-contrast)
+  [![Publish to npm](https://github.com/arro000/pi-monokai-contrast/actions/workflows/publish.yml/badge.svg)](https://github.com/arro000/pi-monokai-contrast/actions/workflows/publish.yml)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+</div>
 
-## Install
+## Why Monokai Contrast?
 
-From this repository's directory:
+Keep Monokai's distinctive syntax colors without losing secondary text, comments or dim labels against the background. These two themes give [Pi](https://pi.dev) separate primary, secondary and dim text levels, with palettes designed for dark and light terminals.
 
-```bash
-pi install .
-```
+## Highlights
 
-After these changes are published, install directly from GitHub:
+- **Two complete variants** — `monokai-contrast` for dark terminals and `monokai-contrast-light` for light terminals.
+- **Contrast checks** — tests require at least a 4.5:1 WCAG contrast ratio for every non-background color token on every declared theme surface.
+- **Consistent styling** — colors cover Markdown, syntax highlighting, tool output, diffs, thinking indicators and HTML export backgrounds.
+- **Automatic switching** — use Pi's light/dark theme pairing to follow the terminal's reported appearance.
+- **Theme-only package** — two JSON files, with no extensions or runtime dependencies.
 
-```bash
-pi install git:github.com/arro000/pi-monokai-contrast
-```
+## Requirements
 
-After the first npm release, you can also install with:
+- A working Pi installation. The themes and bundled schema snapshot were checked against **Pi 1.5.0**; other versions are not covered by that check.
+- A truecolor terminal for the intended palette, with its background set to match the selected variant. Color approximation or terminal-side adjustments can change contrast.
+
+## Installation
+
+Install the published npm package:
 
 ```bash
 pi install npm:@arro000/pi-monokai-contrast
 ```
 
-Use only one installation method to avoid duplicate theme names.
+In an interactive Pi session, run `/reload`, then open `/settings` → **Theme** and select:
 
-Run `/reload`, then open `/settings` → **Theme** and select:
+- **`monokai-contrast`** — dark
+- **`monokai-contrast-light`** — light
 
-- `monokai-contrast` — dark
-- `monokai-contrast-light` — light
+Choose only one installation method to avoid duplicate theme names.
 
-The package manifest explicitly exposes both JSON files. Installing a repository without a manifest or a conventional `themes/` directory does not discover the theme at its root.
+### Alternative sources
 
-### Manual installation
+Install directly from GitHub:
 
-Copy both files instead of installing the package (do not use both methods, which can cause duplicate theme-name collisions):
+```bash
+pi install git:github.com/arro000/pi-monokai-contrast
+```
+
+Or, from the root of a local checkout:
+
+```bash
+pi install .
+```
+
+The package manifest explicitly exposes both root-level JSON files; keep it when installing the repository as a package.
+
+For manual installation instead, run this from the repository root:
 
 ```bash
 mkdir -p ~/.pi/agent/themes
 cp monokai-contrast.json monokai-contrast-light.json ~/.pi/agent/themes/
 ```
 
-If you use a custom `PI_CODING_AGENT_DIR`, use its `themes/` directory instead. Run `/reload`, then select a theme in `/settings`.
+If you use a custom `PI_CODING_AGENT_DIR`, copy the files into its `themes/` directory instead. Run `/reload`, then select the theme in `/settings`.
 
-### Automatic light/dark switching
+## Configuration
 
-Merge this property into `~/.pi/agent/settings.json`, keeping existing settings:
+### Match the terminal background
+
+Pi themes color text, panels and selections, but **do not set the terminal's global background**. Configure your terminal profile separately:
+
+| Variant | Background | Primary text | Secondary text | Dim text |
+|---|---|---|---|---|
+| Dark | `#181910` | `#ffffff` | `#d0d0c8` | `#b5b5ad` |
+| Light | `#ffffff` | `#24292f` | `#4f5760` | `#606770` |
+
+The contrast checks assume these backgrounds and the unmodified theme colors. They do not establish accessibility compliance for the entire terminal interface.
+
+### Follow light/dark appearance
+
+Merge this property into `~/.pi/agent/settings.json`, preserving your other settings. For a custom agent directory, edit its `settings.json` instead.
 
 ```json
 {
@@ -52,88 +87,73 @@ Merge this property into `~/.pi/agent/settings.json`, keeping existing settings:
 }
 ```
 
-Pi expects **light first, dark second** and follows the terminal's reported appearance. For a fixed theme, use either name without `/`.
+Pi expects **light first, dark second**. Switching follows the terminal's reported appearance; the terminal profile still needs a matching background. To keep a fixed theme, use either theme name without `/`.
 
-### Terminal background
+### Palette origins
 
-Pi themes color text, panels, selections and HTML exports; they do **not** set the terminal's global background. Set your terminal profile to match:
+The dark variant retains Monokai-inspired green, yellow, cyan, pink, purple and orange accents. Comments and thinking text use a softer secondary gray, while borders and dim labels use a distinct third level.
 
-| Variant | Background | Primary text | Secondary text | Dim text |
-|---|---|---|---|---|
-| Dark | `#181910` | `#ffffff` | `#d0d0c8` | `#b5b5ad` |
-| Light | `#ffffff` | `#24292f` | `#4f5760` | `#606770` |
-
-Match the terminal appearance to the variant, especially when using automatic switching. Colors and contrast depend on the terminal's truecolor support and any terminal-side color adjustments.
-
-## Palette
-
-The dark theme preserves Monokai green, yellow, cyan, pink, purple and orange. Secondary text, thinking blocks and comments use a slightly softer gray instead of primary white; borders and dim labels use a second gray.
-
-The light theme is inspired by [MONOKAI_HC_EXTREME](https://github.com/arro000/MONOKAI_HC_EXTREME), using its white surfaces and deeper green, ochre, magenta, purple and blue accents. Cyan is darkened further for readable text on light panels. It is an adaptation, not a one-to-one VS Code port.
-
-Every foreground token is tested for WCAG AA contrast (at least 4.5:1) on all declared theme surfaces. This guarantee assumes the matching terminal background above.
+The light variant draws inspiration from [MONOKAI_HC_EXTREME](https://github.com/arro000/MONOKAI_HC_EXTREME), with white surfaces and deeper green, ochre, magenta, purple and blue accents. Cyan is darkened for readability on light panels. It is an adaptation, not a one-to-one VS Code port.
 
 ## Troubleshooting
 
-- **Theme missing:** run `/reload`, check the installation path and select it in `/settings`. Root-level theme JSON files require this package's manifest for package discovery.
-- **Duplicate name:** remove the manually copied files if you installed the package, or remove the package if using manual installation.
-- **Wrong background:** change the terminal profile too; the theme's `appearance` property does not paint the terminal canvas.
-- **Still fails:** capture the exact startup or `/reload` error and your `pi --version` output.
+- **Theme missing:** run `/reload`, check the installation path and reopen `/settings`. Package discovery of these root-level JSON files depends on `package.json`.
+- **Duplicate theme name:** keep either the installed package or the manually copied files, not both.
+- **Wrong background or poor contrast:** check the terminal profile, truecolor support and terminal-side color adjustments. The theme's `appearance` property does not paint the terminal canvas.
+- **Loading error:** include the exact startup or `/reload` error and your `pi --version` output in a [bug report](https://github.com/arro000/pi-monokai-contrast/issues).
 
 ## Development
+
+No build step is needed: Pi loads the JSON files directly. To run the tests, use Node.js and npm; the publishing workflow uses **Node.js 24**.
+
+From the repository root:
 
 ```bash
 npm ci
 npm test
 ```
 
-Tests check package discovery metadata, the official theme schema snapshot, variable resolution, text hierarchy and foreground contrast for both variants. `test/fixtures/theme.schema.json` is a snapshot of <https://pi.dev/schemas/theme.schema.json> matching Pi 1.5.0; refresh it when checking a newer Pi release. No runtime dependencies are needed.
+Tests validate both themes against the bundled schema, package discovery metadata, variable resolution, text hierarchy and foreground contrast across declared surfaces.
 
-## Publish from GitHub
+[`test/fixtures/theme.schema.json`](test/fixtures/theme.schema.json) is a snapshot of the [official Pi theme schema](https://pi.dev/schemas/theme.schema.json) matching Pi 1.5.0. Refresh and review it when checking compatibility with a newer Pi release. Ajv is a development dependency, not a theme runtime requirement.
 
-Pushing a version tag runs `.github/workflows/publish.yml`: check tag/version, install dependencies, run tests, inspect package contents, and publish **`@arro000/pi-monokai-contrast`** publicly on npm with provenance. The tag must exactly match `package.json` (for example `v1.1.0`). Stable versions only; pushing a branch does not publish.
+### Create a release
 
-### First publication (one-time bootstrap)
+The [Publish to npm workflow](.github/workflows/publish.yml) runs on `v*` tags. It checks the package identity and exact tag/version match, installs dependencies, runs tests, inspects package contents and **publishes publicly to npm with provenance**. It does not create a GitHub Release. Only stable `major.minor.patch` versions are accepted; branch pushes do not publish.
 
-1. Ensure your npm account owns the `arro000` scope and can publish public packages. Keep the GitHub repository public for provenance.
-2. On npm, create a short-lived **granular access token**, with read/write package permissions covering the new package in the `@arro000` scope. For unattended publishing, enable **Bypass 2FA** if your account policy permits it. A read-only token cannot publish.
-3. In GitHub: **Settings → Secrets and variables → Actions → New repository secret**. Name it **`NPM_TOKEN`** and paste the token there. Never put it in source, issues, or chat.
-4. Commit and push the workflow, package manifest, and lockfile. Create and push the first tag:
+1. Update the version and lockfile from the repository root:
 
    ```bash
-   git tag v1.1.0
-   git push origin v1.1.0
+   npm version patch --no-git-tag-version
    ```
 
-5. Watch the **Publish to npm** run in GitHub Actions. No local `npm publish` is needed. If a run fails, fix the cause before publishing another version; npm versions cannot be overwritten.
+2. Review and commit the changes.
+3. Push the commit and a tag matching `package.json` exactly (for example, `v1.1.1` for version `1.1.1`):
 
-### Switch to token-free trusted publishing
+   ```bash
+   git tag v1.1.1
+   git push origin HEAD
+   git push origin v1.1.1
+   ```
 
-Once the package exists, open its npm **Settings → Trusted Publisher**, choose **GitHub Actions**, and configure:
+Publishing requires npm authorization. For token-free trusted publishing, configure the package's npm **Settings → Trusted Publisher** for GitHub Actions: owner `arro000`, repository `pi-monokai-contrast`, workflow `publish.yml`, and no environment. Allow direct `npm publish` if prompted. The workflow already requests `id-token: write`.
 
-| Field | Value |
-|---|---|
-| Organization or user | `arro000` |
-| Repository | `pi-monokai-contrast` |
-| Workflow filename | `publish.yml` |
-| Environment | Leave empty |
+The workflow also supports a bootstrap `NPM_TOKEN` repository secret. If needed, use a short-lived granular token with package write permission and an account-policy-compatible 2FA bypass. Keep tokens out of source and bug reports. After a successful trusted-publishing release, delete the secret and revoke the bootstrap token. Protect release tags and remember that published npm versions cannot be overwritten.
 
-If npm asks for allowed actions, enable direct **`npm publish`**. The workflow already requests `id-token: write` and uses a compatible npm CLI on a GitHub-hosted runner. After a successful OIDC release, delete the GitHub `NPM_TOKEN` secret and revoke the bootstrap token on npm. Future releases use short-lived credentials, not a stored npm token.
+## Project Structure
 
-### Subsequent releases
-
-Update the version and lockfile, commit the changes, then push the matching tag. For example:
-
-```bash
-npm version patch --no-git-tag-version
-# Review and commit package.json and package-lock.json first.
-git tag v1.1.1
-git push origin HEAD
-git push origin v1.1.1
+```text
+monokai-contrast.json          Dark theme
+monokai-contrast-light.json    Light theme
+package.json                  Package metadata and theme discovery
+test/                         Schema, contrast and discovery tests
+.github/workflows/publish.yml Tagged npm publication
 ```
 
-Protect release tags in GitHub so only trusted maintainers can trigger publication. The existing `pi-package` keyword makes the published npm package eligible for Pi Packages discovery; indexing may not be immediate.
+## Contributing
+
+[Open an issue](https://github.com/arro000/pi-monokai-contrast/issues) for bugs or palette suggestions, or submit a pull request. For color changes, run `npm test` and describe the affected variant and terminal setup. Contrast calculations complement, rather than replace, a visual check in Pi.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+[MIT](LICENSE).
